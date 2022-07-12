@@ -33,6 +33,7 @@ const profileReducer = (state = initialState, action) => {
    }
 
 }
+////test
 
 export default profileReducer
 export const addPostActionCreator = () => ({ type: ADD_POST })    //экспортируем экшн, где в типе ADD_POST, который потом придет в редюсер
