@@ -1,30 +1,34 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  followAC,
-  setCurrentPageAC,
-  setTotalUserCountAC,
-  setUsersAC,
-  unfollowAC,
+  follow,
+  setCurrentPage,
+  setTotalUserCount,
+  setUsers,
+  toggaleIsFetching,
+  unfollow,
 } from "../../redux/users-reducer";
 import * as axios from "axios";
 import Users from "./Users";
-import preloader from "../../assets/images/Gear.svg";
+import Preloader from "../common/Preloader/Preloader";
 
 class UsersContainer extends React.Component {
   componentDidMount() {
+    this.props.toggaleIsFetching(true) //иконка загрузки
     axios
       .get(
         `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
       )
       .then((response) => {
-        //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логики что нужно сделать)
+        //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логику что нужно сделать)
+        this.props.toggaleIsFetching(false)
         this.props.setUsers(response.data.items); //это наш массив пользователей который отдает нам сервак
         this.props.setTotalUserCount(response.data.totalCount);
       });
   }
 
   onPageChanged = (pageNumber) => {
+    this.props.toggaleIsFetching(true)
     this.props.setCurrentPage(pageNumber);
     axios
       .get(
@@ -32,6 +36,7 @@ class UsersContainer extends React.Component {
       )
       .then((response) => {
         //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логики что нужно сделать)
+        this.props.toggaleIsFetching(false)
         this.props.setUsers(response.data.items);
       });
   };
@@ -39,7 +44,7 @@ class UsersContainer extends React.Component {
   render() {
     return (
       <>
-        {this.props.isFetching ? <img src={preloader} /> : null}
+        {this.props.isFetching ? <Preloader /> : null}
         <Users
           totalUsersCount={this.props.totalUsersCount}
           pageSize={this.props.pageSize}
@@ -65,26 +70,16 @@ let mapStateToProps = (state) => {
   };
 };
 
-let mapDispatchToProps = (dispatch) => {
-  return {
-    follow: (userId) => {
-      //через пропсы передаем эшкн, через экшнкреейтор
-      dispatch(followAC(userId));
-    },
-    unfollow: (userId) => {
-      dispatch(unfollowAC(userId));
-    },
-    setUsers: (users) => {
-      dispatch(setUsersAC(users));
-    },
-    setCurrentPage: (pageNumber) => {
-      dispatch(setCurrentPageAC(pageNumber));
-    },
-    setTotalUserCount: (totalCount) => {
-      dispatch(setTotalUserCountAC(totalCount));
-    },
-  };
-};
+// let mapDispatchToProps = (dispatch) => {
+//   //через пропсы передаем эшкн, через экшнкреейтор
+//   return {
+//     follow: followAC,
+//     unfollow: unfollowAC,
+//     setUsers: setUsersAC,
+//     setCurrentPage: setCurrentPageAC,
+//     setTotalUserCount: setTotalUserCountAC,
+//     toggaleIsFetching: toggaleIsFetchingAC
+//   }
+// }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(mapStateToProps, { follow, unfollow, setUsers, setCurrentPage, setTotalUserCount, toggaleIsFetching })(UsersContainer);

@@ -27,10 +27,12 @@ const Users = (props) => {
       {props.users.map((user) => (
         <div key={user.id} className={s.users_items}>
           <div>
-            <img
-              src={user.photos.small != null ? user.photos.small : userPhoto}
-              className={s.userPhoto}
-            />
+            <NavLink to = { `/profile/ ${u.id}` }>
+              <img
+                src={user.photos.small != null ? user.photos.small : userPhoto}
+                className={s.userPhoto}
+              />
+            </NavLink>
           </div>
 
           <div className={s.user_items_data}>
