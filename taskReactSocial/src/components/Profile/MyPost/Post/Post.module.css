@@ -1,0 +1,23 @@
+
+
+ .item{
+    color: greenyellow;
+    padding: 10px;
+   
+ }
+ .post_wrap{
+    display: flex;
+    align-items: center;
+    
+ }
+
+ .item img{
+    width: 50px;
+    border-radius: 50%;
+    margin: 0 24px 0 0;
+ }
+ .text{
+
+ }
+
+ 

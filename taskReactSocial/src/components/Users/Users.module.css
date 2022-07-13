@@ -1,0 +1,22 @@
+.users_wrap {
+  padding: 20px 0 20px 30px;
+  max-width: 200px;
+}
+
+.userPhoto {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50px;
+}
+.users_items {
+  margin: 0 auto;
+  padding: 0 0 20px 0;
+}
+.user_items_data {
+  padding: 10px;
+}
+
+.selectedPage{
+  font-weight: bold;
+}
