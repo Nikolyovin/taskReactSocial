@@ -1,5 +1,6 @@
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
+const SET_USER_PROFILE = 'SET_USER_PROFILE'
 
 let initialState = {                                        //в каждом редйюсере свой initialState
    posts: [
@@ -8,10 +9,9 @@ let initialState = {                                        //в каждом р
       { id: 3, message: 'Blabla', likesCount: 15 },
       { id: 4, message: 'dadadad', likesCount: 15 },
    ],
-   newPostText: 'it-kamasutra.com'
+   newPostText: 'it-kamasutra.com',
+   profile: null
 }
-
-
 
 const profileReducer = (state = initialState, action) => {
    switch (action.type) {
@@ -28,13 +28,19 @@ const profileReducer = (state = initialState, action) => {
             newPostText:action.newText                     //добавляем введенный текст
          }                              
          
+      case SET_USER_PROFILE:
+         return {
+            ...state,                                      
+            profile:action.profile                     
+         } 
+
       default:                                          //дефолтный кейс, если не найдется такого экшена
          return state
    }
 
 }
-////test
 
 export default profileReducer
 export const addPostActionCreator = () => ({ type: ADD_POST })    //экспортируем экшн, где в типе ADD_POST, который потом придет в редюсер
 export const updateNewPostTextActionCreator = (text) => ({ type: UPDATE_NEW_POST_TEXT, newText: text })
+export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile })
