@@ -25,7 +25,6 @@ class ProfileContainer extends React.Component {
 }
 
   render() {
-    console.log('this.props.profile:', this.props)
       return <Profile { ...this.props } profile = { this.props.profile } />   //с помощью spread оператора прокидываем все пропсы и "расскукоживаем" их
   }
 }
