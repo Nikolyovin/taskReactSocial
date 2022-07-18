@@ -16,6 +16,7 @@ import { usersAPI } from "../../api/api";
 class UsersContainer extends React.Component {
   
   componentDidMount() {
+    
     this.props.toggaleIsFetching(true) //иконка загрузки
     usersAPI.getUsers( this.props.currentPage, this.props.pageSize).then((data) => {     //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логику что нужно сделать)
       this.props.toggaleIsFetching(false)
@@ -27,10 +28,10 @@ class UsersContainer extends React.Component {
   onPageChanged = (pageNumber) => {
     this.props.toggaleIsFetching(true)
     this.props.setCurrentPage(pageNumber);
-    usersAPI.getUsers( pageNumber, this.props.pageSize).then((response) => {
+    usersAPI.getUsers( pageNumber, this.props.pageSize).then((data) => {
       //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логики что нужно сделать)
       this.props.toggaleIsFetching(false)
-      this.props.setUsers(response.data.items);
+      this.props.setUsers(data.items);
     });
   };
 

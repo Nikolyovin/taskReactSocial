@@ -2,6 +2,7 @@ import s from "./Users.module.css";
 import userPhoto from "../../assets/images/images.png";
 import { NavLink } from 'react-router-dom'
 import axios from "axios";
+import { usersAPI } from "../../api/api";
 
 const Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -41,13 +42,8 @@ const Users = (props) => {
             <div>
               { user.followed ? 
                 <button onClick = { () => { 
-                  axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, { // в DELETE запросе криды передаются во 2 объекте 
-                    withCredentials: true, /*мы должны эти вопросы слать авторизованно, поэтому передаем криды */
-                    headers: {
-                      'API-KEY': '91c3c151-6fde-4789-82be-fa55f7b1261b'}   //в объекте с антсройками передаем ключ                             
-                  })
-                    .then((response) => {
-                      if (response.data.resultCode == 0) {
+                  usersAPI.deleteFollow(user.id).then((resultCode) => {
+                      if (resultCode == 0) {
                         props.unfollow(user.id)
                       }
                     })
@@ -56,13 +52,8 @@ const Users = (props) => {
                 </button>
                 : 
                 <button onClick={() => {
-                  axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {},  { // в POST запросе криды передаются в 3 объекте 
-                    withCredentials: true,
-                    headers: {
-                      'API-KEY': '91c3c151-6fde-4789-82be-fa55f7b1261b'}   //в объекте с антсройками передаем ключ                                       
-                  })
-                    .then((response) => {
-                      if (response.data.resultCode == 0) {
+                  usersAPI.postFollow(user.id).then((resultCode) => {
+                      if (resultCode == 0) {
                         props.follow(user.id)
                       }
                   })
