@@ -6,8 +6,7 @@ import { setAuthUserData, setProfilePhoto } from "../../redux/auth-reducer"
 
 class HeaderContainer extends React.Component {
   componentDidMount() {
-    axios
-      .get(`https://social-network.samuraijs.com/api/1.0//auth/me`, {
+    axios.get(`https://social-network.samuraijs.com/api/1.0//auth/me`, {
         withCredentials: true                                       /* передаем криды, авторизованный запрос */
       })
       .then((response) => {
@@ -25,7 +24,6 @@ class HeaderContainer extends React.Component {
          
         }
       })
-      
   }
 
   render() {

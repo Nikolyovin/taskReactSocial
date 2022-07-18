@@ -18,14 +18,16 @@ class UsersContainer extends React.Component {
     this.props.toggaleIsFetching(true) //иконка загрузки
     axios
       .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
+        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {
+          withCredentials: true
+        }
       )
       .then((response) => {
         //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логику что нужно сделать)
         this.props.toggaleIsFetching(false)
         this.props.setUsers(response.data.items); //это наш массив пользователей который отдает нам сервак
         this.props.setTotalUserCount(response.data.totalCount);
-      });
+      })
   }
 
   onPageChanged = (pageNumber) => {
@@ -33,7 +35,9 @@ class UsersContainer extends React.Component {
     this.props.setCurrentPage(pageNumber);
     axios
       .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`
+        `https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`, {
+          withCredentials: true
+        }
       )
       .then((response) => {
         //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логики что нужно сделать)

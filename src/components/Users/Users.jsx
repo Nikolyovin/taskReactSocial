@@ -1,6 +1,7 @@
 import s from "./Users.module.css";
 import userPhoto from "../../assets/images/images.png";
 import { NavLink } from 'react-router-dom'
+import axios from "axios";
 
 const Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -10,23 +11,23 @@ const Users = (props) => {
   }
 
   return (
-    <div className={s.users_wrap}>
+    <div className={ s.users_wrap }>
       <div>
         {pages.map((p) => {
           return (
             <span
-              className={props.currentPage === p && s.selectedPage}
-              onClick={(e) => {
+              className = { props.currentPage === p && s.selectedPage }
+              onClick = { (e) => {
                 props.onPageChanged(p);
               }}
             >
-              {p}
+              { p }
             </span>
           );
         })}
       </div>
-      {props.users.map((user) => (
-        <div key = { user.id } className={ s.users_items }>
+      { props.users.map((user) => (
+        <div key = { user.id } className = { s.users_items }>
           <div>
             <NavLink to = { `/profile/${ user.id }` }>
               <img
@@ -38,18 +39,37 @@ const Users = (props) => {
 
           <div className = { s.user_items_data }>
             <div>
-              { user.followed ? (<button onClick={() => { props.unfollow(user.id) } }>
+              { user.followed ? 
+                <button onClick = { () => { 
+                  axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, { // в DELETE запросе криды передаются во 2 объекте 
+                    withCredentials: true, /*мы должны эти вопросы слать авторизованно, поэтому передаем криды */
+                    headers: {
+                      'API-KEY': '91c3c151-6fde-4789-82be-fa55f7b1261b'}   //в объекте с антсройками передаем ключ                             
+                  })
+                    .then((response) => {
+                      if (response.data.resultCode == 0) {
+                        props.unfollow(user.id)
+                      }
+                    })
+                }}>
+                    Unfollow
+                </button>
+                : 
+                <button onClick={() => {
+                  axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {},  { // в POST запросе криды передаются в 3 объекте 
+                    withCredentials: true,
+                    headers: {
+                      'API-KEY': '91c3c151-6fde-4789-82be-fa55f7b1261b'}   //в объекте с антсройками передаем ключ                                       
+                  })
+                    .then((response) => {
+                      if (response.data.resultCode == 0) {
+                        props.follow(user.id)
+                      }
+                  })
+                }}>
                   Follow
                 </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    props.follow(user.id);
-                  }}
-                >
-                  Unfollow
-                </button>
-              )}
+              }
             </div>
 
             <div>{user.name}</div>

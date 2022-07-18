@@ -1,17 +1,19 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import s from './Header.module.css';
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import s from './Header.module.css'
+import userPhoto from '../../assets/images/images.png'
 
 const Header = ({ isAuth, login, photo }) => {
    console.log('photo:', photo)
    return (
       <header className = { s.header }>
-         <img src = "https://cdn.logo.com/hotlink-ok/logo-social.png" />
-         <div className = { s.loginBlock}>
-            {isAuth ? login : <NavLink to = { '/login' }> Login </NavLink>}
+         <img  className = { s.logo } src = "https://cdn.logo.com/hotlink-ok/logo-social.png" />
+         <div className = { s.loginBlock } >
+            <img src ={ !photo ? userPhoto : photo } className = { s.userPhoto } />
+            { isAuth ? login : <NavLink to = { '/login' }> Login </NavLink> }
          </div>
       </header>
    )
 }
 
-export default Header;
+export default Header
