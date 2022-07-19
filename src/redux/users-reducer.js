@@ -1,3 +1,5 @@
+import { usersAPI } from "../api/api"
+
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS='SET_USERS'
@@ -72,12 +74,48 @@ const usersReducer = (state = initialState, action) => {
 
 }
 
-export const follow = (userId) => ({ type: FOLLOW, userId })    //экспортируем экшн c userId(чтобы было понятно на кого подпичываться), который потом придет в редюсер
-export const unfollow = (userId) => ({ type: UNFOLLOW, userId}) //экспортируем экшн c userId, который потом придет в редюсер
+export const followSuccess = (userId) => ({ type: FOLLOW, userId })    //экспортируем экшн c userId(чтобы было понятно на кого подпичываться), который потом придет в редюсер
+export const unfollowSuccess = (userId) => ({ type: UNFOLLOW, userId}) //экспортируем экшн c userId, который потом придет в редюсер
 export const setUsers = (users)=>({type:SET_USERS, users})
 export const setCurrentPage = (currentPage) => ({ type:SET_CURRENT_PAGE, currentPage })
 export const setTotalUserCount = (totalUserCount) => ({ type:SET_TOTAL_USER_COUNT, count: totalUserCount })
 export const toggaleIsFetching = (isFetching) => ({ type: TOGGALE_IS_FETCHING, isFetching })
 export const toggaleIsFollowingProgress = (isFetching, userId) => ({ type: TOGGALE_IS_FOLLOWING_PROGRESS, isFetching, userId })
+
+export const getUsers = (currentPage, pageSize, /* pageNumber */) => {
+   return (dispatch) => {
+      dispatch(toggaleIsFetching(true)) //иконка загрузки
+      usersAPI.getUsers(currentPage, pageSize).then((data) => {     //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логику что нужно сделать)
+        dispatch(toggaleIsFetching(false))
+        dispatch(setUsers(data.items)) //это наш массив пользователей который отдает нам сервак
+        dispatch(setTotalUserCount(data.totalCount))
+      //   dispatch(setCurrentPage(pageNumber))
+      })
+   }
+}
+
+export const follow = (userId) => {
+   return (dispatch) => {
+      dispatch(toggaleIsFollowingProgress(true, userId))
+      usersAPI.unfollowSuccess(userId).then((resultCode) => {
+          if (resultCode == 0) {
+            dispatch(followSuccess(userId))
+          }
+          dispatch(toggaleIsFollowingProgress(false, userId))
+        })
+   }
+}
+
+export const unfollow = (userId) => {
+   return (dispatch) => {
+      dispatch(toggaleIsFollowingProgress(true, userId))
+      usersAPI.followSuccess(userId).then((resultCode) => {
+          if (resultCode == 0) {
+            dispatch(unfollowSuccess(userId))
+          }
+          dispatch(toggaleIsFollowingProgress(false, userId))
+        })
+   }
+}
 
 export default usersReducer
