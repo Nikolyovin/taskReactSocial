@@ -4,13 +4,15 @@ const SET_USERS='SET_USERS'
 const SET_CURRENT_PAGE='SET_CURRENT_PAGE'
 const SET_TOTAL_USER_COUNT='SET_TOTAL_USER_COUNT'
 const TOGGALE_IS_FETCHING = 'TOGALE_IS_FETCHING'
+const TOGGALE_IS_FOLLOWING_PROGRESS = 'TOGGALE_IS_FOLLOWING_PROGRESS'
 
 let initialState = {                                        //в каждом редйюсере свой initialState
    users:[],
    pageSize: 15,
    totalUserCount: 0,
    currentPage: 1,
-   isFetching: true
+   isFetching: true,
+   followingInProgress: [ ]                                                     //массив id-шников с нажатыми кнопками 
 }
 
 const usersReducer = (state = initialState, action) => {
@@ -19,7 +21,7 @@ const usersReducer = (state = initialState, action) => {
          return {
             ...state,
             users: state.users.map(user=>{                         //т.к. map возвращает новый массив, то не нужно делать копию 
-               if (user.id===action.userId){                       //по id находим нужного человека
+               if (user.id === action.userId){                       //по id находим нужного человека
                   return {...user, followed:true}            //если id совпадает, то возвращаем копию user из мапа с измененным followed
                }
                return user                                  //если не совпадает, то возвращаем тот же самый объект
@@ -30,7 +32,7 @@ const usersReducer = (state = initialState, action) => {
          return {
             ...state,
             users: state.users.map(user=>{                         //т.к. map возвращает новый массив, то не нужно делать копию 
-               if (user.id===action.userId){                       //по id находим нужного человека
+               if (user.id === action.userId){                       //по id находим нужного человека
                   return {...user, followed:false}            //если id совпадает, то возвращаем копию user из мапа с измененным followed
                }
                return user                                  //если не совпадает, то возвращаем тот же самый объект
@@ -54,6 +56,16 @@ const usersReducer = (state = initialState, action) => {
          return { ...state, isFetching: action.isFetching}
       }
 
+      case TOGGALE_IS_FOLLOWING_PROGRESS: {
+         return { 
+            ...state, 
+            followingInProgress: action.isFetching
+               ? [...state.followingInProgress, action.userId]                                 // добавляем юзера в массив, где храняться id чья кнопка нажата
+               : state.followingInProgress.filter(id => id != action.userId)                   //с помощью фильтра убираем ненужного юзера
+
+         }
+      }
+
       default:                                          //дефолтный кейс, если не найдется такого экшена
          return state
    }
@@ -65,6 +77,7 @@ export const unfollow = (userId) => ({ type: UNFOLLOW, userId}) //экспорт
 export const setUsers = (users)=>({type:SET_USERS, users})
 export const setCurrentPage = (currentPage) => ({ type:SET_CURRENT_PAGE, currentPage })
 export const setTotalUserCount = (totalUserCount) => ({ type:SET_TOTAL_USER_COUNT, count: totalUserCount })
-export const toggaleIsFetching = (isFetching) => ({ type:TOGGALE_IS_FETCHING, isFetching })
+export const toggaleIsFetching = (isFetching) => ({ type: TOGGALE_IS_FETCHING, isFetching })
+export const toggaleIsFollowingProgress = (isFetching, userId) => ({ type: TOGGALE_IS_FOLLOWING_PROGRESS, isFetching, userId })
 
 export default usersReducer

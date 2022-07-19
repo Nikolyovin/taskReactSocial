@@ -7,11 +7,13 @@ import {
   setUsers,
   toggaleIsFetching,
   unfollow,
+  toggaleIsFollowingProgress
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
 import { usersAPI } from "../../api/api";
 
+// здесь контейнерный компонент внутри другого контенерного компонента с помошью mapStateToProps и mapDispatchToProps мы передаем пропсы, а потом еще раз эти пропсы передаем в чистый компонент
 
 class UsersContainer extends React.Component {
   
@@ -47,9 +49,11 @@ class UsersContainer extends React.Component {
           onPageChanged={this.onPageChanged}
           unfollow={this.props.unfollow}
           follow={this.props.follow}
+          toggaleIsFollowingProgress= {this.props.toggaleIsFollowingProgress}
+          followingInProgress={this.props.followingInProgress}
         />
       </>
-    );
+    )
   }
 }
 
@@ -61,9 +65,9 @@ let mapStateToProps = (state) => {
     totalUsersCount: state.usersPage.totalUserCount,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
-  };
-};
-
+    followingInProgress: state.usersPage.followingInProgress
+  }
+}
 // let mapDispatchToProps = (dispatch) => {
 //   //через пропсы передаем эшкн, через экшнкреейтор
 //   return {
@@ -76,4 +80,4 @@ let mapStateToProps = (state) => {
 //   }
 // }
 
-export default connect(mapStateToProps, { follow, unfollow, setUsers, setCurrentPage, setTotalUserCount, toggaleIsFetching })(UsersContainer);
+export default connect(mapStateToProps, { follow, unfollow, setUsers, setCurrentPage, setTotalUserCount, toggaleIsFetching, toggaleIsFollowingProgress })(UsersContainer);
