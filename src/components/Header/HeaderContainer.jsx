@@ -1,22 +1,21 @@
 import React from "react"
 import { connect } from "react-redux"
 import Header from "./Header"
-import { setAuthUserData, setProfilePhoto } from "../../redux/auth-reducer"
-import { usersAPI } from "../../api/api"
+import { getAuthUserData, setAuthUserData, setProfilePhoto } from "../../redux/auth-reducer"
 
 class HeaderContainer extends React.Component {
   componentDidMount() {
-    usersAPI.getAuth()
-      .then((data) => {
-        if (data.resultCode === 0) {   /* проверяем статус код, залогинин или нет */
-          const { id, email, login } = data.data  /* деструктуризация */     
-          this.props.setAuthUserData(id, email, login)
-          usersAPI.getProfilePhoto(id)
-            .then((photos) => {
-              this.props.setProfilePhoto(photos)
-            })
-        }
-      })
+    this.props.getAuthUserData()
+    // usersAPI.getAuth().then((data) => {
+    //   if (data.resultCode === 0) {   /* проверяем статус код, залогинин или нет */
+    //     const { id, email, login } = data.data  /* деструктуризация */     
+    //     this.props.setAuthUserData(id, email, login)
+    //     usersAPI.getProfilePhoto(id)
+    //       .then((photos) => {
+    //         this.props.setProfilePhoto(photos)
+    //       })
+    //   }
+    // })
   }
 
   render() {
@@ -30,4 +29,4 @@ const mapStateToProps = (state) => ({
   photo: state.auth.photo
 })
 
-export default connect(mapStateToProps, { setAuthUserData, setProfilePhoto })(HeaderContainer)
+export default connect(mapStateToProps, { setAuthUserData, setProfilePhoto, getAuthUserData })(HeaderContainer)

@@ -63,7 +63,7 @@ const usersReducer = (state = initialState, action) => {
             ...state, 
             followingInProgress: action.isFetching
                ? [...state.followingInProgress, action.userId]                                 // добавляем юзера в массив, где храняться id чья кнопка нажата
-               : state.followingInProgress.filter(id => id != action.userId)                   //с помощью фильтра убираем ненужного юзера
+               : state.followingInProgress.filter(id => id !== action.userId)                   //с помощью фильтра убираем ненужного юзера
 
          }
       }
@@ -97,8 +97,8 @@ export const getUsers = (currentPage, pageSize, /* pageNumber */) => {
 export const follow = (userId) => {
    return (dispatch) => {
       dispatch(toggaleIsFollowingProgress(true, userId))
-      usersAPI.unfollowSuccess(userId).then((resultCode) => {
-          if (resultCode == 0) {
+      usersAPI.follow(userId).then((resultCode) => {
+          if (resultCode === 0) {
             dispatch(followSuccess(userId))
           }
           dispatch(toggaleIsFollowingProgress(false, userId))
@@ -109,8 +109,8 @@ export const follow = (userId) => {
 export const unfollow = (userId) => {
    return (dispatch) => {
       dispatch(toggaleIsFollowingProgress(true, userId))
-      usersAPI.followSuccess(userId).then((resultCode) => {
-          if (resultCode == 0) {
+      usersAPI.unfollow(userId).then((resultCode) => {
+          if (resultCode === 0) {
             dispatch(unfollowSuccess(userId))
           }
           dispatch(toggaleIsFollowingProgress(false, userId))

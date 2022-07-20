@@ -1,3 +1,5 @@
+import { usersAPI } from "../api/api"
+
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
@@ -40,7 +42,17 @@ const profileReducer = (state = initialState, action) => {
 
 }
 
-export default profileReducer
 export const addPostActionCreator = () => ({ type: ADD_POST })    //экспортируем экшн, где в типе ADD_POST, который потом придет в редюсер
 export const updateNewPostTextActionCreator = (text) => ({ type: UPDATE_NEW_POST_TEXT, newText: text })
 export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile })
+
+export const getUserProfile = (userId) => {
+   return (dispatch) => {
+      usersAPI.getProfile(userId).then((response) => {      //отправляем get запрос на сервак .then(response(когда запрос выполниться пишем логику что нужно сделать)
+         dispatch(setUserProfile(response.data))
+       })
+   }
+}
+
+export default profileReducer
+

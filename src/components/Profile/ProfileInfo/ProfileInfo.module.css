@@ -1,6 +1,8 @@
 
  .discriptionBlock{
     padding: 10px;
+    display: flex;
+    width: 250px;
  }
 
 .contactsWrap {
@@ -15,8 +17,12 @@
  .jobWrap {
    padding: 20px 0 0 20px;
 }
- 
 
+.profilePhoto {
+   width: 100%;
+   object-fit: contain;
+
+}
  /* .contacntItem {
     color:rgb(233, 139, 139);
    
