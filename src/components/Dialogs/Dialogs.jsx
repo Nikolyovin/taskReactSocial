@@ -1,26 +1,29 @@
-import React from "react";
-import DialogItems from "./DialogItems/DialogItems";
-import s from "./Dialogs.module.css";
-import Message from "./Message/Message";
+import React from "react"
+import { Navigate } from "react-router-dom"
+import DialogItems from "./DialogItems/DialogItems"
+import s from "./Dialogs.module.css"
+import Message from "./Message/Message"
 
 const Dialogs = (props) => {
   const dialogsElements = props.dialogsPage.dialogs.map((d) => (
     <DialogItems name={d.name} key={d.id} id={d.id} img={d.img} />
-  ));
+  ))
   const messagesElements = props.dialogsPage.messages.map((m) => (
     <Message text={m.text} key={m.id} id={m.id} who={m.who} />
-  ));
+  ))
 
-  const newMessage = React.createRef();
+  const newMessage = React.createRef()
 
   const onSendMessage = () => {
-    props.sendMessage();
-  };
+    props.sendMessage()
+  }
 
   const onMessageChange = (e) => {
-    const text = e.target.value;
-    props.updateNewMessageText(text);
-  };
+    const text = e.target.value
+    props.updateNewMessageText(text)
+  }
+  
+  if (!props.isAuth) return <Navigate to = { '/login' } />
 
   return (
     <div>
@@ -39,7 +42,7 @@ const Dialogs = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dialogs;
+export default Dialogs
