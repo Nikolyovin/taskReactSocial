@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { addMessageActionCreator, updateNewMessageTextActionCreator } from '../../redux/dialogs-reducer'
 import Dialogs from './Dialogs'
@@ -20,10 +21,6 @@ let mapDispatchToProps=(dispatch) => {                               //дост�
          dispatch(addMessageActionCreator())
       }
    }
-}
-
-const AuthRedirectComponent = withAuthRedirect(Dialogs)
-
-const DialogsContainer=connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent)                   //указываем Dialogs, чтобы создать для него контейнерную компоненту и в скобках передаем функции которые потом войдут в пропсы
-
-export default DialogsContainer
+}               
+// с помощью compose оборачиваем Dialogs в withAuthRedirect, и все вместе в connect
+export default  compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(Dialogs)
