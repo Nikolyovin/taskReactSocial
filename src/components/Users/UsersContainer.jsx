@@ -10,6 +10,7 @@ import {
 import Users from "./Users"
 import Preloader from "../common/Preloader/Preloader"
 import { withAuthRedirect } from "../../hoc/withAuthRedirect"
+import { compose } from "redux"
 
 // здесь контейнерный компонент внутри другого контенерного компонента с помошью mapStateToProps и mapDispatchToProps мы передаем пропсы, а потом еще раз эти пропсы передаем в чистый компонент
 
@@ -65,4 +66,5 @@ let mapStateToProps = (state) => {
 //   }
 // }
 
-export default withAuthRedirect(connect(mapStateToProps, { follow, unfollow, setCurrentPage, toggaleIsFollowingProgress, getUsers })(UsersContainer))
+export default compose (withAuthRedirect,
+  connect(mapStateToProps, { follow, unfollow, setCurrentPage, toggaleIsFollowingProgress, getUsers })(UsersContainer))
