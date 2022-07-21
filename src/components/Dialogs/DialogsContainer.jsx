@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withAuthRedirect } from '../../hoc/withAuthRedirect'
 import { addMessageActionCreator, updateNewMessageTextActionCreator } from '../../redux/dialogs-reducer'
 import Dialogs from './Dialogs'
 
 
 let mapStateToProps=(state) => {                                     //функция редаксовская
    return {
-      dialogsPage: state.dialogsPage,                                //даем доступ в стейт
-      isAuth: state.auth.isAuth
+      dialogsPage: state.dialogsPage                                //даем доступ в стейт
    }
 }
 
@@ -22,6 +22,8 @@ let mapDispatchToProps=(dispatch) => {                               //дост�
    }
 }
 
-const DialogsContainer=connect(mapStateToProps, mapDispatchToProps)(Dialogs)                   //указываем Dialogs, чтобы создать для него контейнерную компоненту и в скобках передаем функции которые потом войдут в пропсы
+const AuthRedirectComponent = withAuthRedirect(Dialogs)
+
+const DialogsContainer=connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent)                   //указываем Dialogs, чтобы создать для него контейнерную компоненту и в скобках передаем функции которые потом войдут в пропсы
 
 export default DialogsContainer
