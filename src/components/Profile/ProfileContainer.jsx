@@ -18,6 +18,7 @@ class ProfileContainer extends React.Component {
   componentDidMount() {
     const userId = this.props.match.params.userId || 2
     this.props.getUserProfile(userId)
+    this.props.getUserStatus(userId)
   }
 
   render() {
@@ -27,7 +28,8 @@ class ProfileContainer extends React.Component {
 }         
 
 const mapStateToProps = (state) => ({
-  profile: state.profilePage.profile
+  profile: state.profilePage.profile,
+  status: state.profilePage.status
 })
 
  // создаем еще контейнерную кмопоненту, чтобы передать данные из url(мы передаем :userId в app.js)

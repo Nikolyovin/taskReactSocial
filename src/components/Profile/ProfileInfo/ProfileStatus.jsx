@@ -7,13 +7,13 @@ class ProfileStatus extends React.Component {
     }
     // так как мы в классовом компоненте, то тут методы создаются стандартно, но тогда потеряется контекст и нужно импользовать bind
     //по этому мы объявляем метод с помощью синтаксиса стрелочной функции на 2019 год эксперементальная технология
-    activeEditMode() {
+    activeEditMode = () => {
         this.setState({
             editMode: true
         })
     }
 
-    deactiveEditMode() {
+    deactiveEditMode = () => {
         this.setState({
             editMode: false
         })
@@ -25,11 +25,11 @@ class ProfileStatus extends React.Component {
                 { !this.state.editMode 
                     ?
                     <div>
-                        <span onDoubleClick = { this.activeEditMode.bind(this) }>{ this.props.status }</span>
+                        <span onDoubleClick = { this.activeEditMode }>{ this.props.status }</span>
                     </div> 
                     :
                     <div>
-                        <input autoFocus = { true } onBlur = { this.deactiveEditMode.bind(this) } value = { this.props.status }/>
+                        <input autoFocus = { true } onBlur = { this.deactiveEditMode } value = { this.props.status }/>
                     </div>
                 }
             </>

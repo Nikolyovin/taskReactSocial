@@ -14,7 +14,8 @@ export const usersAPI = {
     },
 
     getProfile(userId) {
-        return instance.get(`profile/${userId}`)
+        console.warn('Obolete method. Please profileAPI object.')
+        return profileAPI.getProfile(userId)
     },
 
     follow(userId) {
@@ -26,8 +27,26 @@ export const usersAPI = {
     },
 
     getProfilePhoto(id) {
-        return instance.get(`/profile/${ id }`).then(response => response.data.photos.small)
+        console.warn('Obolete method. Please profileAPI object.')
+        profileAPI.getProfilePhoto(userId)
     }
+}
+
+export const profileAPI = {
+    getProfile(userId) {
+        return instance.get(`profile/${userId}`)
+    },
+    //remake!!!
+    getProfilePhoto(id) {
+        return instance.get(`/profile/${ id }`).then(response => response.data.photos.small)
+    },
+    getStatus(userId) {
+        return instance.get(`/profile/status/${userId}`)
+    },
+    upDate(status) {
+        return instance.put(`/profile/status`, { status: status })  //вторым параметорм передаем payload, по доке api это status 
+    }
+
 }
 
 export const authAPI = {
