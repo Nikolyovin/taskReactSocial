@@ -66,5 +66,6 @@ let mapStateToProps = (state) => {
 //   }
 // }
 
-export default compose (withAuthRedirect,
-  connect(mapStateToProps, { follow, unfollow, setCurrentPage, toggaleIsFollowingProgress, getUsers })(UsersContainer))
+export default compose (
+  connect(mapStateToProps, { follow, unfollow, setCurrentPage, toggaleIsFollowingProgress, getUsers }),
+    /* withAuthRedirect */)(UsersContainer)
